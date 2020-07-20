@@ -29,7 +29,7 @@ def read_data(path):
 
 sentences_test,labels_test = read_data('/home/svogeti/Documents/ATIS-Dataset/284285_585165_bundle_archive/atis_intents_test.csv')
 
-sentences_test=['Quality Gates']
+sentences_test=['Quality Profile Access']
 #labels_test=['atis_ground_service','atis_airfare','atis_flight']
 print(sentences_test,'\n')
 print(set(labels_test))
@@ -120,7 +120,7 @@ def svc_training(X,y):
     clf.fit(X, y)
     return clf
 
-model = svc_training(train_X,train_y)
+#model = svc_training(train_X,train_y)
 
 def svc_validation(model,X,y):
     # Predict the labels of the test set
@@ -133,31 +133,37 @@ def svc_validation(model,X,y):
         print(y[i])
         print("y_pred[i]")
         print(actualList[y_pred[i].item()])
-        if y_pred[i] == y[i]:
-            n_correct += 1
-
+        #if y_pred[i] == y[i]:
+        #    return actualList[y_pred[i].item()]
+        #    n_correct += 1
+        return actualList[y_pred.item()]
     print("Predicted {0} correctly out of {1} training examples".format(n_correct, len(y)))
 
 
 #svc_validation(model,train_X,train_y)
 #svc_validation(model,test_X,test_y)
 
-import pickle
+#def getPickleFile():
+#    import pickle
 
-# Save the trained model as a pickle string.
-saved_model = pickle.dumps(model)
+#    # Save the trained model as a pickle string.
+    saved_model = pickle.dumps(model)
 
-# Load the pickled model
-print("Achar Test")
-knn_from_pickle = pickle.loads(saved_model)
+    # Load the pickled model
+#    print("Achar Test")
+#    knn_from_pickle = pickle.loads(saved_model)
 
-# Use the loaded pickled model to make predictions
-print("Achar Test1")
-# save the model to disk
-filename = 'finalized_model.sav'
-joblib.dump(knn_from_pickle, filename)
-svc_validation(knn_from_pickle,train_X,train_y)
-svc_validation(knn_from_pickle,test_X,test_y)
+    # Use the loaded pickled model to make predictions
+#    print("Achar Test1")
+    # save the model to disk
+#    global filename_model
+ #   filename_model='finalized_model.sav'
+ #   joblib.dump(knn_from_pickle, 'finalized_model.sav')
 
+def getPredictions(modelFile,testInput):
+    # load the model from disk
+    loaded_model = joblib.load(modelFile)
+    result=svc_validation(loaded_model, testInput, test_y)
+    return result
 
 
