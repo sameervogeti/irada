@@ -1,5 +1,6 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import joblib
 
 # Input data files are available in the "../input/" directory.
 # For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
@@ -138,11 +139,25 @@ def svc_validation(model,X,y):
     print("Predicted {0} correctly out of {1} training examples".format(n_correct, len(y)))
 
 
-svc_validation(model,train_X,train_y)
-svc_validation(model,test_X,test_y)
+#svc_validation(model,train_X,train_y)
+#svc_validation(model,test_X,test_y)
 
-## Uncomment only if you change the Prediction Model
-#from sklearn.metrics import classification_report
-#y_true, y_pred = test_y, model.predict(test_X)
-#print(classification_report(y_true, y_pred))
+import pickle
+
+# Save the trained model as a pickle string.
+saved_model = pickle.dumps(model)
+
+# Load the pickled model
+print("Achar Test")
+knn_from_pickle = pickle.loads(saved_model)
+
+# Use the loaded pickled model to make predictions
+print("Achar Test1")
+# save the model to disk
+filename = 'finalized_model.sav'
+joblib.dump(knn_from_pickle, filename)
+svc_validation(knn_from_pickle,train_X,train_y)
+svc_validation(knn_from_pickle,test_X,test_y)
+
+
 
